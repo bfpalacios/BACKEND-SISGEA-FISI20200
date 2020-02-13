@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.procesos.mapper.IDocenteMapper">
+
+	<sql id="consultaVistaMant">
+        SELECT id_docente
+        	 , nombres
+        	 , apellidos
+        	 , tipo
+        FROM VIE_MAN_DOCENTE
+    </sql>
+    
+    <sql id="orden">
+    	ORDER BY id_docente
+    </sql>
+	
+    <select id="buscarTodos" resultType="Docente" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+    
+    <select id="buscarDocente" resultType="Docente">
+        <include refid="consultaVistaMant"/>
+        WHERE
+                id_docente = #{idDocente}
+    </select>
+
+</mapper>

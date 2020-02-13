@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.mantenimientosgenerales.mapper.IEspacioAcademicoMapper">
+
+	<sql id="consultaVistaMant">
+        SELECT id_espacio_academico
+             , descripcion_espacio_academico
+             , aforo
+             , pabellon
+             , tipo_espacio
+             , descripcion_tipo_espacio
+             , asignable
+        FROM VIE_MAN_ESPACIO_ACADEMICO
+    </sql>
+	
+    <sql id="orden">
+    	ORDER BY id_espacio_academico
+    </sql>
+	
+    <select id="buscarTodos" resultType="EspacioAcademico" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+    
+    <select id="buscarEspacioAcademico" resultType="EspacioAcademico">
+        <include refid="consultaVistaMant"/>
+        WHERE
+                id_espacio_academico = #{idEspacioAcademico}
+    </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_MAE_ESPACIO_ACADEMICO(
+                #{modo, 							  			jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idEspacioAcademico, 	      	jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.descripcionEspacioAcademico,	jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.aforo, 	      				jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.pabellon,						jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.tipoEspacio,					jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.asignable, 	      			jdbcType=NUMERIC, mode=IN}
+            )
+        }
+    </select>
+
+</mapper>

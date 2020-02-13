@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.procesos.mapper.ICursoMapper">
+
+    <sql id="consultaVistaMant">
+        SELECT id_plan
+        	 , id_curso
+        	 , ciclo
+        	 , especialidad
+        	 , descripcion
+        	 , creditaje
+        	 , tipo
+        	 , grupo
+        FROM VIE_MAN_CURSO
+    </sql>
+
+    <sql id="orden">
+    	ORDER BY id_curso
+    </sql>
+
+    <select id="buscarTodos" resultType="edu.taller.sisgea.procesos.model.Curso" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+
+    <select id="buscarCurso" resultType="edu.taller.sisgea.procesos.model.Curso">
+        <include refid="consultaVistaMant"/>
+        WHERE
+        id_curso = #{idCurso}
+    </select>
+
+</mapper>

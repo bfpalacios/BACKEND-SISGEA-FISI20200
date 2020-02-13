@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.mantenimientosgenerales.mapper.IMultitabDetMapper">
+
+    <sql id="consultaVistaMant">
+        SELECT id_multitab_cab
+             , descripcion_multitab_cab
+             , id_multitab_det
+             , descripcion_item
+             , abreviatura
+        FROM VIE_MAN_MULTITAB_DET
+    </sql>
+    
+    <sql id="orden">
+    	ORDER BY id_multitab_cab,id_multitab_det
+    </sql>
+
+    <select id="buscarTodos" resultType="MultitabDet" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+
+    <select id="buscarMultiTabDet" resultType="MultitabDet">
+        <include refid="consultaVistaMant"/>
+        WHERE
+                id_multitab_cab = #{idMultitabCab}
+            AND id_multitab_det = #{idMultitabDet}
+    </select>
+
+    <select id="buscarMultitabsDetPorMultitabCab" resultType="MultitabDet">
+        <include refid="consultaVistaMant"/>
+        WHERE
+            id_multitab_cab = #{idMultitabCab}
+    </select>
+
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_MAE_MULTITAB_DET(
+                #{modo, 								jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idMultitabDet,        jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idMultitabCab, 	    jdbcType=INTEGER, mode=IN},
+                #{objetoMantenido.descripcionItem,      jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.abreviatura,          jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
+
+</mapper>

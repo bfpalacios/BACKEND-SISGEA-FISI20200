@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="LOG_PATH" source="logging.path"/>
+    <springProperty scope="context" name="LOG_FILE" source="logging.file"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+    <appender name="file"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/${LOG_FILE}.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/sisgea-backend/${LOG_FILE}.%d{yyyy-MM-dd}.%i.log
+            </FileNamePattern>
+            <maxFileSize>64MB</maxFileSize>
+            <!-- Los archivos serán borrados si tienen 30 días de antiguedad
+                 o todos los archivos superan el tamaño de 512MB -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>512MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+    <!-- Declaración para desactivar el logging del payload de las peticiones, esto evita el registro de información -->
+    <!-- sensible -->
+    <logger name="org.springframework.web.servlet.mvc.method.annotation" level="off">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <!-- Declaración de logger específicos para el profile incluido dev (include: dev) -->
+    <springProfile name="dev">
+        <logger name="org.springframework" level="debug" additivity="false">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="file"/>
+        </logger>
+        <logger name="edu.taller.sisgea" level="info" additivity="false">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="file"/>
+        </logger>
+        <root level="debug">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="file"/>
+        </root>
+    </springProfile>
+</configuration>

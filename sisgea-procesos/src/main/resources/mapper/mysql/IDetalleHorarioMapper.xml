@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.procesos.mapper.IDetalleHorarioMapper">
+
+    <sql id="consultaVistaMant">
+        SELECT id_horario_detalle
+        	 , id_curso
+        	 , desc_curso
+        	 , seccion
+        	 , id_horario
+        	 , tipo_horario
+        	 , horario_inicio
+        	 , horario_fin
+        FROM VIE_MAN_HORARIO_DETALLE
+    </sql>
+
+    <sql id="orden">
+    	ORDER BY id_horario_detalle,id_curso,seccion,id_horario
+    </sql>
+
+    <select id="buscarTodos" resultType="DetalleHorario" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+
+    <select id="buscarDetalleHorario" resultType="edu.taller.sisgea.procesos.model.DetalleHorario">
+        <include refid="consultaVistaMant"/>
+        WHERE
+        id_horario_detalle = #{idHorarioDetalle}
+        AND id_curso = #{idCurso}
+        AND seccion = #{seccion}
+        AND id_horario = #{idHorario}
+    </select>
+
+</mapper>
