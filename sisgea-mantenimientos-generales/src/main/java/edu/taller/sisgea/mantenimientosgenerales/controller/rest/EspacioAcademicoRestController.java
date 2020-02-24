@@ -30,7 +30,7 @@ public class EspacioAcademicoRestController {
 	}
 	
 	@GetMapping(value = "/espacios-academicos")
-	public List<EspacioAcademico> buscarTodosEspacioAcademicoes() {
+	public List<EspacioAcademico> buscarTodosEspacioAcademicos() {
 		return this.espacioAcademicoService.buscarTodosEspacioAcademico();
 	}
 	

@@ -24,7 +24,7 @@ public class HorarioRestController {
     }
 
     @GetMapping(value = "/horario")
-    public List<Horario> buscarTodosDetalleHorario() {
+    public List<Horario> buscarTodosHorario() {
         return this.horarioService.buscarTodosHorario();
     }
 

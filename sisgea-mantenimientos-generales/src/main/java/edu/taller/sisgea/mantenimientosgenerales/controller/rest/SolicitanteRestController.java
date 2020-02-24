@@ -30,7 +30,7 @@ public class SolicitanteRestController {
 	}
 	
 	@GetMapping(value = "/solicitantes")
-	public List<Solicitante> buscarTodosSolicitantees() {
+	public List<Solicitante> buscarTodosSolicitantes() {
 		return this.solicitanteService.buscarTodosSolicitante();
 	}
 	
