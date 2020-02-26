@@ -8,7 +8,8 @@
 		<module>sisgea-boot</module>
 		<module>sisgea-consultas-generales</module>
     	<module>sisgea-procesos</module>
-  	</modules>
+    	<module>sisgea-reportes</module>
+	</modules>
 	
 	<!-- Modulo padre Spring Boot -->
 	<parent>
