@@ -1,10 +1,10 @@
-package edu.taller.sisgea.consultasgenerales.mapper.solicitud;
+package edu.taller.sisgea.mantenimientosgenerales.mapper;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
-import edu.taller.sisgea.consultasgenerales.model.solicitud.Solicitud;
+import edu.taller.sisgea.mantenimientosgenerales.model.Solicitud;
 import ob.commons.mantenimiento.mapper.IMantenibleMapper;
 
 @Mapper
