@@ -32,6 +32,7 @@ public class SolicitudRestController {
 
 	@GetMapping(value = "/solicitud-espacios")
 	public List<Solicitud> buscarTodosSolicitudes() {
+		System.out.println("LLEGO");
 		return this.solicitudService.buscarTodosSolictud();
 	}
 
