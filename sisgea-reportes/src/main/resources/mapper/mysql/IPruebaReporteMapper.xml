@@ -15,19 +15,19 @@
     	ORDER BY id_multitab_cab,id_multitab_det
     </sql>
 
-    <select id="buscarTodos" resultType="Prueba" statementType="PREPARED">
+    <select id="buscarTodos" resultType="PruebaReporte" statementType="PREPARED">
         <include refid="consultaVistaMant"/>
         <include refid="orden"/>
     </select>
 
-    <select id="buscarMultiTabDet" resultType="Prueba">
+    <select id="buscarMultiTabDet" resultType="PruebaReporte">
         <include refid="consultaVistaMant"/>
         WHERE
                 id_multitab_cab = #{idMultitabCab}
             AND id_multitab_det = #{idMultitabDet}
     </select>
 
-    <select id="buscarMultitabsDetPorMultitabCab" resultType="Prueba">
+    <select id="buscarMultitabsDetPorMultitabCab" resultType="PruebaReporte">
         <include refid="consultaVistaMant"/>
         WHERE
             id_multitab_cab = #{idMultitabCab}
