@@ -4,7 +4,10 @@
 
 	<sql id="consultaVistaMant">
         SELECT  ID
-        		,  CICLO
+        		, ID_ASIGNACION
+        		, ID_ESPACIO_ACADEMICO
+        		, CICLO
+        		, ID_CURSO
                 , CURSO
                 , SECCION
                 , ID_DOCENTE
@@ -17,6 +20,8 @@
                 , DESCRIPCION_TIPO_HORARIO
                 , DIA
                 , DESCRIPCION_DIA
+                , ID_HORARIO
+                , ID_HORARIO_DETALLE
                 , HORARIO_INICIO
                 , HORARIO_FIN
                 , ESPACIO
