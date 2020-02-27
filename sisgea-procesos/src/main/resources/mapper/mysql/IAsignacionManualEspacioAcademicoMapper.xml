@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.procesos.mapper.IAsignacionManualEspacioAcademicoMapper">
+
+	<sql id="consultaVistaMant">
+        SELECT  ID
+        		, ID_ASIGNACION
+        		, ID_ESPACIO_ACADEMICO
+        		, CICLO
+        		, ID_CURSO
+                , CURSO
+                , SECCION
+                , ID_DOCENTE
+                , NOMBRES_DOCENTE
+                , TOPE
+                , MATRICULADOS
+                , TURNO
+                , DESCRIPCION_TURNO
+                , TIPO_HORARIO
+                , DESCRIPCION_TIPO_HORARIO
+                , DIA
+                , DESCRIPCION_DIA
+                , ID_HORARIO
+                , ID_HORARIO_DETALLE
+                , HORARIO_INICIO
+                , HORARIO_FIN
+                , ESPACIO
+        FROM VIE_CON_ASIGNACION_ESPACIO_ACADEMICO
+    </sql>
+    
+    <sql id="orden">
+    	ORDER BY CICLO, CURSO, SECCION
+    </sql>
+	
+    <select id="buscarTodos" resultType="AsignacionManualEspacioAcademico" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+    
+    <select id="buscarAsignacionManualEspacioAcademico" resultType="AsignacionManualEspacioAcademico">
+        <include refid="consultaVistaMant"/>
+        WHERE
+                id_espacio_academico = #{idEspacioAcademico}
+    </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_ASIGNACION_MANUAL_ESPACIO_ACADEMICO(
+                #{modo, 							 	jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idAsignacion, 	 	jdbcType=INTEGER, mode=IN},
+                #{objetoMantenido.idEspacioAcademico,	jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.idCurso,				jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.seccion, 	      		jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.idHorario, 	   		jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.idHorarioDetalle, 	jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.horarioInicio,		jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.horarioFin,			jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
+	
+</mapper>

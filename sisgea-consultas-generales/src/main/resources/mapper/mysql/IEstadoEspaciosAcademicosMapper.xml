@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.consultasgenerales.mapper.IEstadoEspaciosAcademicosMapper">
+	
+	<select id="buscarPorCriterio" parameterType="CriterioBusquedaEstadoEspacioAcademico"  resultType="EstadoEspacioAcademico" statementType="PREPARED">	
+		SELECT * 
+		FROM vie_con_estado_espacios_academicos
+		<where>
+			<if  test="idsEspacioAcademico !=null and idsEspacioAcademico.size()>0">
+				AND ID_ESPACIO_ACADEMICO IN 
+				<foreach item="item" index="index" collection="idsEspacioAcademico" open ="(" separator="," close=")">
+					#{item}
+				</foreach> 
+			</if>
+			<if  test="horarioInicio != null and horarioFin != null">
+				AND HORARIO BETWEEN #{horarioInicio} AND #{horarioFin}
+			</if>
+		</where>
+   	</select>
+   	
+</mapper>
