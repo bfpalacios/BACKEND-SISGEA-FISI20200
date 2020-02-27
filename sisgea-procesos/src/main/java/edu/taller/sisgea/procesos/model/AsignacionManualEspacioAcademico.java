@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AsignacionEspacioAcademico {
+public class AsignacionManualEspacioAcademico {
 	
 	private String id;
 	private Integer idAsignacion;
@@ -35,5 +35,5 @@ public class AsignacionEspacioAcademico {
     private String idCurso;
     private Integer idHorario;
     private Integer idHorarioDetalle;
-
+    
 }
