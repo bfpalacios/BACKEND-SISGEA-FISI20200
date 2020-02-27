@@ -20,7 +20,7 @@ public class EstadoEspaciosAcademicosRestController {
 		this.estadoEspaciosAcademicosService = estadoEspaciosAcademicosService;
 	}
 	
-	@GetMapping("/estado-espacios-academicos")
+	@GetMapping("/espacios-academicos/estado")
     public List<EstadoEspacioAcademico> buscarPorCriterio(CriterioBusquedaEstadoEspacioAcademico criterio) {
         return this.estadoEspaciosAcademicosService.buscarPorCriterio(criterio);
     }

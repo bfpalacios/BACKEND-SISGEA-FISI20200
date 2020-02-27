@@ -12,10 +12,11 @@
 					#{item}
 				</foreach> 
 			</if>
-			<if  test="horarioInicio != null and horarioFin != null">
-				AND HORARIO BETWEEN #{horarioInicio} AND #{horarioFin}
+			<if  test="fecha != null">
+				AND (DIA = CONCAT(ELT(WEEKDAY(#{fecha}) + 1, 'LU', 'MA', 'MI', 'JU', 'VI', 'SA', 'DO')) OR DIA IS NULL)
 			</if>
 		</where>
+		ORDER BY ID_ESPACIO_ACADEMICO ASC, HORARIO ASC
    	</select>
    	
 </mapper>

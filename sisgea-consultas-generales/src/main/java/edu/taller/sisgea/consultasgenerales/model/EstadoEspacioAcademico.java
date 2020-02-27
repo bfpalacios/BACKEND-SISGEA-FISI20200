@@ -10,7 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EstadoEspacioAcademico {
+	Integer id;
+	Integer idAsignacion;
 	String horario;
 	Integer idEspacioAcademico;
+	String descripcionEspacioAcademico;
 	String idCurso;
+	String descripcionCurso;
+	String dia;
+	String idHorarioDetalle;
+	String tipoHorario;
 }
