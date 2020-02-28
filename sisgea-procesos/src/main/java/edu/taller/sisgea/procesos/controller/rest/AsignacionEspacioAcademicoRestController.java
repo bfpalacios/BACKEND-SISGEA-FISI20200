@@ -21,7 +21,7 @@ public class AsignacionEspacioAcademicoRestController {
 		return this.asignacionEspacioAcademicoService.buscarTodosAsignacionEspacioAcademico();
 	}
 
-	@GetMapping(value = "/asignacion-espacios/procesar")
+	@PostMapping(value = "/asignacion-espacios/procesar")
 	public List<AsignacionEspacioAcademico> asignacionEspaciosAcademicos(){
 		this.asignacionEspacioAcademicoService.ejecutarProcedimientoAsignacionEspacioAcademico();
 		return this.asignacionEspacioAcademicoService.buscarTodosAsignacionEspacioAcademico();
