@@ -5,28 +5,7 @@
 
 	<sql id="consultaVistaMant">
 		SELECT
-			  ID_SOLICITUD
-			, ID_ESPACIO_ACADEMICO
-			, DESCRIPCION_ESPACIO_ACADEMICO
-			, ID_SOLICITANTE
-			, DNI
-			, NOMBRES
-			, APELLIDO_PATERNO
-			, APELLIDO_MATERNO
-			, ESTADO_SOLICITUD
-			,DESCRIPCION_ESTADO_SOLICITUD
-			, TIPO_SOLICITUD
-			, DESCRIPCION_TIPO_SOLICITUD
-			, MOTIVO
-			, FECHA_REGISTRO
-			, FECHA_RESERVA
-			, HORA_INICIO
-			, HORA_FIN
-			, ESTADO_ASISTENCIA
-			, PABELLON
-			, DESCRIPCION_PABELLON
-			, ID_TIPO_ESPACIO
-			, DESCRIPCION_TIPO_ESPACIO
+			  *
 		FROM VIE_SOLICITUD
 	</sql>
 
@@ -59,9 +38,7 @@
 				#{objetoMantenido.fechaReserva, 		jdbcType=DATE, 	  mode=IN},
 				#{objetoMantenido.horaInicio, 			jdbcType=VARCHAR, mode=IN},
 				#{objetoMantenido.horaFin, 				jdbcType=VARCHAR, mode=IN},
-				#{objetoMantenido.estadoAsistencia, 	jdbcType=VARCHAR, mode=IN},
-				#{objetoMantenido.nombreArchivo,		jdbcType=VARCHAR, mode=IN},
-				#{objetoMantenido.archivo,				jdbcType=BLOB,	  mode=IN}
+				#{objetoMantenido.estadoAsistencia, 	jdbcType=VARCHAR, mode=IN}
 			)
 		}
 	</select>
