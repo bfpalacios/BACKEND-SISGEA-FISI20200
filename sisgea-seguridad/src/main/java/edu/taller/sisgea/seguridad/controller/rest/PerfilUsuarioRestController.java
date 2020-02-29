@@ -33,6 +33,11 @@ public class PerfilUsuarioRestController {
 	public List<PerfilUsuario> buscarTodosPerfilUsuarios() {
 		return this.perfilUsuarioService.buscarTodosPerfilUsuario();
 	}
+
+	@GetMapping(value = "/perfil-usuario/{usuario}")
+	public List<PerfilUsuario> buscarTodosPerfilUsuarios(@PathVariable String usuario) {
+		return this.perfilUsuarioService.buscarPerfilesUsuario(usuario);
+	}
 	
 	@PostMapping(value = "/perfil-usuario", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(code = HttpStatus.CREATED)

@@ -29,6 +29,12 @@ public class PerfilUsuarioService extends MantenibleService<PerfilUsuario> imple
 	public List<PerfilUsuario> buscarTodosPerfilUsuario() {
 		return this.buscarTodos();
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<PerfilUsuario> buscarPerfilesUsuario(String usuario){
+		return this.perfilUsuarioMapper.buscarPerfilesUsuario(usuario);
+	}
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)

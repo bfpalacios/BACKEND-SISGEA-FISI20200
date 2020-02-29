@@ -8,6 +8,8 @@ import java.util.List;
 public interface IPerfilUsuarioService extends IMantenibleService<PerfilUsuario> {
 	
 	List<PerfilUsuario> buscarTodosPerfilUsuario();
+
+	List<PerfilUsuario> buscarPerfilesUsuario(String usuario);
 	
 	PerfilUsuario buscarPerfilUsuario(Integer idPerfilUsuario);
 	

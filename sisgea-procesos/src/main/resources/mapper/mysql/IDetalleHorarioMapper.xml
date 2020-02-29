@@ -8,7 +8,9 @@
         	 , desc_curso
         	 , seccion
         	 , id_horario
+        	 , descripcion_horario
         	 , tipo_horario
+        	 , descripcion_tipo_horario
         	 , horario_inicio
         	 , horario_fin
         FROM VIE_MAN_HORARIO_DETALLE

@@ -6,6 +6,11 @@
         SELECT *
         FROM VIE_MAN_SEG_PERFIL_USUARIO
     </sql>
+    
+    <sql id="consultaVistaRest">
+        SELECT DISTINCT ID_PERFIL, DESCRIPCION_PERFIL
+        FROM VIE_MAN_SEG_PERFIL_USUARIO
+    </sql>
 	
     <sql id="orden">
     	ORDER BY id_perfil_usuario
@@ -20,6 +25,15 @@
         <include refid="consultaVistaMant"/>
         WHERE
                 id_perfil_usuario = #{idPerfilUsuario}
+    </select>
+    
+    
+    <select id="buscarPerfilesUsuario" resultType="PerfilUsuario">
+        <include refid="consultaVistaRest"/>
+        WHERE
+                usuario = #{usuario}
+        ORDER BY
+        		id_perfil_usuario
     </select>
     
     <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
