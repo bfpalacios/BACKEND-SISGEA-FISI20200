@@ -40,7 +40,8 @@
 		</if>
     </sql>
 
-    <select id="buscarTodos" resultType="ReporteSolicitudes" statementType="PREPARED">
+    <select id="buscarPorCriterio" resultType="ReporteSolicitudes" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
         <where>
         	<include refid="filtros"/>
         </where>
