@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CriterioBusquedaEstadoEspacioAcademico {
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	Date fecha;
+	//@DateTimeFormat(pattern = "yyyy-MM-dd")
+	String fecha;
 	List<Integer> idsEspacioAcademico;
 }
