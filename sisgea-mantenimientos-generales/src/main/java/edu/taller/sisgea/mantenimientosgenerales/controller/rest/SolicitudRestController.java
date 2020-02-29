@@ -63,11 +63,10 @@ public class SolicitudRestController {
 	public Solicitud aprobarSolicitud(@IdNumerico(maxRange = 65535) @PathVariable Integer idSolicitud,
 			@Validated @RequestBody Solicitud Solicitud) {
 		return this.solicitudService.aprobarSolicitud(idSolicitud, Solicitud);
+	}
+	
 	@PostMapping(value = "/solicitud-espacios/carga", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<?> registrarSolicitudArchivo(@RequestParam("file") MultipartFile file,
-			@RequestBody Solicitud solicitud) throws IOException {
-		solicitud.setNombreArchivo(file.getOriginalFilename());
-		solicitud.setArchivo(file.getBytes());
+	public ResponseEntity<?> registrarSolicitudArchivo(@RequestBody Solicitud solicitud) throws IOException {
 		Solicitud resultadoSolicitud = this.solicitudService.registrarSolicitud(solicitud);
 		if(resultadoSolicitud == null) {
 			return new ResponseEntity<Object>("Ha fallado la carga", HttpStatus.CREATED);

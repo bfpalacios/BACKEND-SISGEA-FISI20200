@@ -74,6 +74,8 @@ public class SolicitudService extends MantenibleService<Solicitud> implements IS
 		solicitud.setIdSolicitud(idSolicitud);
 		this.solicitudMapper.aprobarSolicitud(solicitud);
 		return this.buscarSolicitud(solicitud.getIdSolicitud());
+	}
+	
 	//casos de carga
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
