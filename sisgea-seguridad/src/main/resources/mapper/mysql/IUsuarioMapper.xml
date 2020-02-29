@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.seguridad.mapper.IUsuarioMapper">
+
+	<sql id="consultaVistaMant">
+        SELECT *
+        FROM VIE_MAN_SEG_USUARIO
+    </sql>
+	
+    <sql id="orden">
+    	ORDER BY usuario
+    </sql>
+	
+    <select id="buscarTodos" resultType="Usuario" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+    
+    <select id="buscarUsuario" resultType="Usuario">
+        <include refid="consultaVistaMant"/>
+        WHERE
+                usuario = #{usuario}
+    </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_SEG_USUARIO(
+                #{modo, 							  			jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.usuario, 	      				jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.nombres,						jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.apellidos,					jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.contraseña,     				jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
+
+</mapper>

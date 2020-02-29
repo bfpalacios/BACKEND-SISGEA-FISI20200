@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.seguridad.mapper.IPerfilRecursoMapper">
+
+	<sql id="consultaVistaMant">
+        SELECT *
+        FROM VIE_MAN_SEG_PERFIL_RECURSO
+    </sql>
+	
+    <sql id="orden">
+    	ORDER BY id_perfil_recurso
+    </sql>
+	
+    <select id="buscarTodos" resultType="PerfilRecurso" statementType="PREPARED">
+        <include refid="consultaVistaMant"/>
+        <include refid="orden"/>
+    </select>
+    
+    <select id="buscarPerfilRecurso" resultType="PerfilRecurso">
+        <include refid="consultaVistaMant"/>
+        WHERE
+                id_perfil_recurso = #{idPerfilRecurso}
+    </select>
+    
+    <select id="buscarRecursosPerfil" resultType="PerfilRecurso">
+        <include refid="consultaVistaMant"/>
+        WHERE
+                id_perfil = #{idPerfil}
+    </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_SEG_PERFIL_RECURSO(
+                #{modo, 							  				jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idPerfilRecurso, 	      			jdbcType=INTEGER, mode=INOUT},
+                #{objetoMantenido.idRecurso, 	      				jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idPerfil,							jdbcType=INTEGER, mode=IN}
+            )
+        }
+    </select>
+
+</mapper>

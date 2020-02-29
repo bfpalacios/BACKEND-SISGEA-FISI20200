@@ -33,6 +33,11 @@
             <artifactId>sisgea-reportes</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>edu.taller.sisgea</groupId>
+            <artifactId>sisgea-seguridad</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     
     <build>

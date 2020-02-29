@@ -9,6 +9,7 @@
 		<module>sisgea-consultas-generales</module>
     	<module>sisgea-procesos</module>
     	<module>sisgea-reportes</module>
+    	<module>sisgea-seguridad</module>
 	</modules>
 	
 	<!-- Modulo padre Spring Boot -->
