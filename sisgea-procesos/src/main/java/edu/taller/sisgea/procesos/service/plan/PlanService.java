@@ -2,11 +2,11 @@ package edu.taller.sisgea.procesos.service.plan;
 
 import edu.taller.sisgea.procesos.mapper.IPlanMapper;
 import ob.commons.error.exception.RecursoNoEncontradoException;
+import ob.commons.error.model.ErrorResponse;
 import ob.commons.excel.exception.ReadingExcelFileException;
 import ob.commons.excel.util.TypesUtil;
 import ob.commons.mantenimiento.mapper.IMantenibleMapper;
 import ob.commons.mantenimiento.service.MantenibleService;
-import edu.taller.sisgea.procesos.model.resultadocarga.ResultadoCarga;
 import edu.taller.sisgea.procesos.model.Plan;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -60,22 +60,21 @@ public class PlanService extends MantenibleService<Plan> implements IPlanService
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<ResultadoCarga> cargarArchivos(List<MultipartFile> multipartfiles) {
-		List<ResultadoCarga> listaResultados = new ArrayList<>();
+	public List<ErrorResponse> cargarArchivos(List<MultipartFile> multipartfiles) {
+		List<ErrorResponse> listaExcepciones = new ArrayList<>();
 		for (MultipartFile multipartfile : multipartfiles) {
 			String filename = multipartfile.getOriginalFilename();
 			try (BufferedInputStream bis = new BufferedInputStream(multipartfile.getInputStream())) {
-				ResultadoCarga resultadoCarga = leerExcel(filename, bis);
-				listaResultados.add(resultadoCarga);
+				leerExcel(filename, bis);
 			} catch (IOException e) {
 				throw new RecursoNoEncontradoException(e.getMessage());
 			}
 		}
-		return listaResultados;
+		return listaExcepciones;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED)
-	public ResultadoCarga leerExcel(String filename, InputStream inputStream){
+	public void leerExcel(String filename, InputStream inputStream){
 		try (Workbook workbook = WorkbookFactory.create(inputStream)) {
 			Sheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
@@ -99,22 +98,10 @@ public class PlanService extends MantenibleService<Plan> implements IPlanService
 				listaFilas.add(fila);
 			}
 			cargarExcel(listaFilas);
-			ResultadoCarga resultadoCarga = ResultadoCarga.builder()
-					.nombreArchivo(filename)
-					.numeroRegistros(listaFilas.size())
-					.exito(true)
-					.build();
-			return resultadoCarga;
+		} catch (SQLException e) {
+			throw new ReadingExcelFileException("Verificar si el Plan no tiene dependencias ya existentes. \nEstado SQL: " + e.getSQLState()+"\nMensaje: "+e.getMessage());
 		} catch (IOException ex) {
-			throw new ReadingExcelFileException(
-							"Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
-		} catch (Exception ex) {
-			ResultadoCarga resultadoCargaFallida = ResultadoCarga.builder()
-					.nombreArchivo(filename)
-					.numeroRegistros(0)
-					.exito(false)
-					.build();
-			return resultadoCargaFallida;
+			throw new ReadingExcelFileException("Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
 		}
 	}
 	

@@ -1,11 +1,16 @@
 package edu.taller.sisgea.mantenimientosgenerales.service.solicitud;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import edu.taller.sisgea.mantenimientosgenerales.mapper.ISolicitudMapper;
 import edu.taller.sisgea.mantenimientosgenerales.model.Solicitud;
@@ -19,6 +24,7 @@ public class SolicitudService extends MantenibleService<Solicitud> implements IS
 	private static final String SOLICITUD_NO_ENCONTRADO = "El Espacio Académico %s no existe";
 
 	private final ISolicitudMapper solicitudMapper;
+	private String uploadFolder = ".//src//main//resource//archivos//";
 
 	public SolicitudService(@Qualifier("ISolicitudMapper") IMantenibleMapper<Solicitud> mantenibleMapper) {
 		super(mantenibleMapper);
@@ -68,6 +74,15 @@ public class SolicitudService extends MantenibleService<Solicitud> implements IS
 		solicitud.setIdSolicitud(idSolicitud);
 		this.solicitudMapper.aprobarSolicitud(solicitud);
 		return this.buscarSolicitud(solicitud.getIdSolicitud());
+	//casos de carga
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void guardarArchivo(MultipartFile file) throws IOException {
+		if(!file.isEmpty()) {
+			byte[] bytesArchivo = file.getBytes();
+			Path path = Paths.get(uploadFolder + file.getOriginalFilename());
+			Files.write(path,bytesArchivo);
+		}
 	}
 
 }

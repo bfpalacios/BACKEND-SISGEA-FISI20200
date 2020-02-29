@@ -4,6 +4,7 @@ import edu.taller.sisgea.consultasgenerales.ConsultasGeneralesBoot;
 import edu.taller.sisgea.mantenimientosgenerales.MantenimientosGeneralesBoot;
 import edu.taller.sisgea.procesos.ProcesosBoot;
 import edu.taller.sisgea.reportes.ReportesBoot;
+import edu.taller.sisgea.seguridad.SeguridadBoot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,7 +28,8 @@ import java.util.List;
 		scanBasePackageClasses = {MantenimientosGeneralesBoot.class,
 		                          ConsultasGeneralesBoot.class,
 		                          ProcesosBoot.class,
-		                          ReportesBoot.class})
+		                          ReportesBoot.class,
+		                          SeguridadBoot.class})
 public class SisgeaBoot {
 	
 	public static void main(String[] args) {

@@ -40,4 +40,7 @@ public class Solicitud {
 	private String idTipoEspacio;
 	private String descripcionTipoEspacio;
 	
+	private String nombreArchivo;
+	private byte[] archivo;
+	
 }
