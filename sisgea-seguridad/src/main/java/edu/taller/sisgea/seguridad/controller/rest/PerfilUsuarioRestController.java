@@ -29,12 +29,12 @@ public class PerfilUsuarioRestController {
 		this.perfilUsuarioService = perfilUsuarioService;
 	}
 	
-	@GetMapping(value = "/perfilUsuarios")
+	@GetMapping(value = "/perfil-usuario")
 	public List<PerfilUsuario> buscarTodosPerfilUsuarios() {
 		return this.perfilUsuarioService.buscarTodosPerfilUsuario();
 	}
 	
-	@PostMapping(value = "/perfilUsuarios", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value = "/perfil-usuario", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public PerfilUsuario registrarPerfilUsuario(@Validated({IRegistro.class, Default.class}) @RequestBody PerfilUsuario perfilUsuario) {
 		System.out.println(perfilUsuario);
@@ -42,7 +42,7 @@ public class PerfilUsuarioRestController {
 		return this.perfilUsuarioService.buscarPerfilUsuario(perfilUsuario.getIdPerfilUsuario());
 	}
 	
-	@PutMapping(value = "/perfilUsuarios/{idPerfilUsuario}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(value = "/perfil-usuario/{idPerfilUsuario}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public PerfilUsuario actualizarPerfilUsuario(@IdNumerico(maxRange = 65535) @PathVariable Integer idPerfilUsuario,
 	                             @Validated @RequestBody PerfilUsuario perfilUsuario) {
 		System.out.println(perfilUsuario);
@@ -50,7 +50,7 @@ public class PerfilUsuarioRestController {
 		return this.perfilUsuarioService.buscarPerfilUsuario(perfilUsuario.getIdPerfilUsuario());
 	}
 	
-	@DeleteMapping(value = "/perfilUsuarios/{idPerfilUsuario}")
+	@DeleteMapping(value = "/perfil-usuario/{idPerfilUsuario}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void eliminarPerfilUsuario(@IdNumerico(maxRange = 65535) @PathVariable Integer idPerfilUsuario) {
 		System.out.println(idPerfilUsuario);

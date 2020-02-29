@@ -29,17 +29,17 @@ public class PerfilRecursoRestController {
 		this.perfilRecursoService = perfilRecursoService;
 	}
 	
-	@GetMapping(value = "/perfilRecursos")
+	@GetMapping(value = "/perfil-recurso")
 	public List<PerfilRecurso> buscarTodosPerfilRecursos() {
 		return this.perfilRecursoService.buscarTodosPerfilRecurso();
 	}
 
-	@GetMapping(value = "/perfilRecursos/{idPerfil}")
+	@GetMapping(value = "/perfil-recurso/{idPerfil}")
 	public List<PerfilRecurso> buscarRecursosPerfil(@PathVariable Integer idPerfil) {
 		return this.perfilRecursoService.buscarRecursosPerfil(idPerfil);
 	}
 	
-	@PostMapping(value = "/perfilRecursos", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(value = "/perfil-recurso", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public PerfilRecurso registrarPerfilRecurso(@Validated({IRegistro.class, Default.class}) @RequestBody PerfilRecurso perfilRecurso) {
 		System.out.println(perfilRecurso);
@@ -47,7 +47,7 @@ public class PerfilRecursoRestController {
 		return this.perfilRecursoService.buscarPerfilRecurso(perfilRecurso.getIdPerfilRecurso());
 	}
 	
-	@PutMapping(value = "/perfilRecursos/{idPerfilRecurso}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PutMapping(value = "/perfil-recurso/{idPerfilRecurso}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public PerfilRecurso actualizarPerfilRecurso(@IdNumerico(maxRange = 65535) @PathVariable Integer idPerfilRecurso,
 	                             @Validated @RequestBody PerfilRecurso perfilRecurso) {
 		System.out.println(perfilRecurso);
@@ -55,7 +55,7 @@ public class PerfilRecursoRestController {
 		return this.perfilRecursoService.buscarPerfilRecurso(perfilRecurso.getIdPerfilRecurso());
 	}
 	
-	@DeleteMapping(value = "/perfilRecursos/{idPerfilRecurso}")
+	@DeleteMapping(value = "/perfil-recurso/{idPerfilRecurso}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void eliminarPerfilRecurso(@IdNumerico(maxRange = 65535) @PathVariable Integer idPerfilRecurso) {
 		System.out.println(idPerfilRecurso);
