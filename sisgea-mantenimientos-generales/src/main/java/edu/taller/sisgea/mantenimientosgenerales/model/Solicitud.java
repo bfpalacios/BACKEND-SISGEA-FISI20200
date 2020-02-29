@@ -31,7 +31,7 @@ public class Solicitud {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaRegistro;
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date fechaReserva;
+	private String fechaReserva;
 	private String horaInicio;
 	private String horaFin;
 	private String estadoAsistencia;
