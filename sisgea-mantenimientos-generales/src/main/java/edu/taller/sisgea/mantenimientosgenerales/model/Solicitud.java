@@ -36,4 +36,7 @@ public class Solicitud {
 	private String horaFin;
 	private String estadoAsistencia;
 	
+	private String nombreArchivo;
+	private byte[] archivo;
+	
 }
