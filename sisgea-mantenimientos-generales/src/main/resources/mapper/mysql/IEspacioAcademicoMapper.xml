@@ -7,6 +7,7 @@
              , descripcion_espacio_academico
              , aforo
              , pabellon
+             , descripcion_pabellon
              , tipo_espacio
              , descripcion_tipo_espacio
              , asignable
