@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.reportes.mapper.IEstadisticasMapper">
+
+    <sql id="consultaVistaMant">
+        SELECT *
+        FROM VIE_REP_SOLICITUDES
+    </sql>
+    
+    <sql id="filtros">
+    	<if  test="fechaReservaInicio != null and fechaReservaFin != null">
+			 FECHA_RESERVA BETWEEN #{fechaReservaInicio}  AND #{fechaReservaFin}
+		</if>
+		<if  test="fechaRegistroInicio != null and fechaRegistroFin != null">
+			 AND FECHA_REGISTRO BETWEEN #{fechaRegistroInicio}  AND #{fechaRegistroFin}
+		</if>
+    	<if  test="pabellones !=null and pabellones.size()>0">
+			AND ID_PABELLON IN 
+				<foreach item="item" index="index" collection="pabellones" open ="(" separator="," close=")">
+					#{item}
+				</foreach>
+		</if>
+		<if  test="tipoEspacios !=null and tipoEspacios.size()>0">
+			AND TIPO_ESPACIO IN 
+				<foreach item="item" index="index" collection="tipoEspacios" open ="(" separator="," close=")">
+					#{item}
+				</foreach>
+		</if>
+		<if  test="tiposSolicitudes !=null and tiposSolicitudes.size()>0">
+			AND TIPO_SOLICITUD IN 
+				<foreach item="item" index="index" collection="tiposSolicitudes" open ="(" separator="," close=")">
+					#{item}
+				</foreach>
+		</if>
+		<if  test="solicitantes !=null and solicitantes.size()>0">
+			AND ID_SOLICITANTE IN 
+				<foreach item="item" index="index" collection="solicitantes" open ="(" separator="," close=")">
+					#{item}
+				</foreach>
+		</if>
+    </sql>
+
+    <select id="buscarTodos" resultType="ReporteSolicitudes" statementType="PREPARED">
+        <where>
+        	<include refid="filtros"/>
+        </where>
+    </select>
+    
+</mapper>
