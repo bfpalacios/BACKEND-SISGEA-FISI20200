@@ -61,5 +61,13 @@ public class SolicitudService extends MantenibleService<Solicitud> implements IS
 		Solicitud solicitud = Solicitud.builder().idSolicitud(idSolicitud).build();
 		this.eliminar(solicitud);
 	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Solicitud aprobarSolicitud(Integer idSolicitud, Solicitud solicitud) {
+		solicitud.setIdSolicitud(idSolicitud);
+		this.solicitudMapper.aprobarSolicitud(solicitud);
+		return this.buscarSolicitud(solicitud.getIdSolicitud());
+	}
 
 }

@@ -54,5 +54,11 @@ public class SolicitudRestController {
 	public void eliminarSolicitud(@IdNumerico(maxRange = 65535) @PathVariable Integer idSolicitud) {
 		this.solicitudService.eliminarSolicitud(idSolicitud);
 	}
+	
+	@PutMapping(value = "/solicitud-espacios/accion/{idSolicitud}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public Solicitud aprobarSolicitud(@IdNumerico(maxRange = 65535) @PathVariable Integer idSolicitud,
+			@Validated @RequestBody Solicitud Solicitud) {
+		return this.solicitudService.aprobarSolicitud(idSolicitud, Solicitud);
+	}
 
 }

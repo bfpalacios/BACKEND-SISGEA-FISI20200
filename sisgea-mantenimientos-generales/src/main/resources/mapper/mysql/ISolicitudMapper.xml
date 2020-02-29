@@ -23,6 +23,10 @@
 			, HORA_INICIO
 			, HORA_FIN
 			, ESTADO_ASISTENCIA
+			, PABELLON
+			, DESCRIPCION_PABELLON
+			, ID_TIPO_ESPACIO
+			, DESCRIPCION_TIPO_ESPACIO
 		FROM VIE_SOLICITUD
 	</sql>
 
@@ -56,6 +60,14 @@
 				#{objetoMantenido.horaInicio, 			jdbcType=VARCHAR, mode=IN},
 				#{objetoMantenido.horaFin, 				jdbcType=VARCHAR, mode=IN},
 				#{objetoMantenido.estadoAsistencia, 	jdbcType=VARCHAR, mode=IN}
+			)
+		}
+	</select>
+	
+	<select id="aprobarSolicitud" parameterType="Solicitud" statementType="CALLABLE">
+		{
+			CALL PRC_APROBAR_SOLICITUD(
+				#{idSolicitud							jdbcType=VARCHAR, mode=IN}
 			)
 		}
 	</select>

@@ -35,5 +35,9 @@ public class Solicitud {
 	private String horaInicio;
 	private String horaFin;
 	private String estadoAsistencia;
+	private String pabellon;
+	private String descripcionPabellon;
+	private String idTipoEspacio;
+	private String descripcionTipoEspacio;
 	
 }

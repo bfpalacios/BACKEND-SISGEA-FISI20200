@@ -14,4 +14,6 @@ public interface ISolicitudMapper extends IMantenibleMapper<Solicitud> {
 	
 	Optional<Solicitud> buscarSolicitud(Integer idSolicitud);
 	
+	Solicitud aprobarSolicitud(Solicitud solicitud);
+	
 }
