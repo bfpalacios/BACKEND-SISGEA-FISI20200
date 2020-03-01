@@ -29,5 +29,19 @@
         AND id_curso = #{idCurso}
         AND seccion = #{seccion}
     </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_MAE_HORARIO(
+                #{modo, 							jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idHorario,		jdbcType=INTEGER, mode=IN},
+                #{objetoMantenido.idCurso,			jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.seccion,			jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.dia,				jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.horarioInicio,	jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.horarioFin,		jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
 
 </mapper>

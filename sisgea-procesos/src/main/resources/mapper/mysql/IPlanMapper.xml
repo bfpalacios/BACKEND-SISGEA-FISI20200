@@ -26,5 +26,18 @@
         WHERE
                 id_plan = #{idPlan}
     </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_MAE_PLAN(
+                #{modo, 							jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idPlan,			jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.facultad,			jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.escuela,			jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.especialidad,		jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.descripcionPlan,	jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
 
 </mapper>

@@ -33,5 +33,20 @@
         AND seccion = #{seccion}
         AND id_horario = #{idHorario}
     </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_MAE_DETALLE_HORARIO(
+                #{modo, 							jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idDetalleHorario,	jdbcType=INTEGER, mode=INOUT},
+                #{objetoMantenido.idCurso,			jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.seccion,			jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.idHorario,		jdbcType=INTEGER, mode=IN},
+                #{objetoMantenido.tipoHorario,		jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.horarioInicio,	jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.horarioFin,		jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
 
 </mapper>

@@ -31,5 +31,20 @@
                 id_curso = #{idCurso}
         	AND seccion = #{seccion}
     </select>
-
+	
+	<select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_MAE_PROGRAMACION(
+                #{modo, 						jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.seccion,		jdbcType=INTEGER, mode=IN},
+                #{objetoMantenido.idCurso,		jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idDocente,	jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.tope,			jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.matriculados,	jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.turno,		jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.aula,			jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
+    
 </mapper>
