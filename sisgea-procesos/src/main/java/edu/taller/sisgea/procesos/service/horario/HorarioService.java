@@ -2,17 +2,14 @@ package edu.taller.sisgea.procesos.service.horario;
 
 import edu.taller.sisgea.procesos.mapper.IHorarioMapper;
 import edu.taller.sisgea.procesos.model.Horario;
-import edu.taller.sisgea.procesos.model.resultadocarga.ResultadoCarga;
 import ob.commons.error.exception.RecursoNoEncontradoException;
 import ob.commons.excel.exception.ReadingExcelFileException;
-import ob.commons.excel.util.TypesUtil;
 import ob.commons.mantenimiento.mapper.IMantenibleMapper;
 import ob.commons.mantenimiento.service.MantenibleService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +17,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.sql.DataSource;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,8 +30,6 @@ public class HorarioService extends MantenibleService<Horario> implements IHorar
 
     private static final String HORARIO_NO_ENCONTRADO = "El Horario de id de id curso %s, seccion %d, id horario %s no existe";
     private final IHorarioMapper horarioMapper;
-
-    private @Autowired DataSource dataSource;
 
     public HorarioService(@Qualifier("IHorarioMapper") IMantenibleMapper<Horario> mantenibleMapper) {
         super(mantenibleMapper);
@@ -60,22 +51,21 @@ public class HorarioService extends MantenibleService<Horario> implements IHorar
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<ResultadoCarga> cargarArchivos(List<MultipartFile> multipartfiles) {
-        List<ResultadoCarga> listaResultados = new ArrayList<>();
+    public List<Horario> cargarArchivos(List<MultipartFile> multipartfiles) {
+        List<Horario> listaHorarios = new ArrayList<>();
         for (MultipartFile multipartfile : multipartfiles) {
             String filename = multipartfile.getOriginalFilename();
             try (BufferedInputStream bis = new BufferedInputStream(multipartfile.getInputStream())) {
-                ResultadoCarga resultadoCarga = leerExcel(filename, bis);
-                listaResultados.add(resultadoCarga);
+            	listaHorarios = this.leerExcel(filename, bis);
             } catch (IOException e) {
                 throw new RecursoNoEncontradoException(e.getMessage());
             }
         }
-        return listaResultados;
+        return listaHorarios;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public ResultadoCarga leerExcel(String filename, InputStream inputStream){
+    public List<Horario> leerExcel(String filename, InputStream inputStream){
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
@@ -100,99 +90,33 @@ public class HorarioService extends MantenibleService<Horario> implements IHorar
                         .build();
                 listaFilas.add(fila);
             }
-            cargarExcel(listaFilas);
-            ResultadoCarga resultadoCarga = ResultadoCarga.builder()
-                    .nombreArchivo(filename)
-                    .numeroRegistros(listaFilas.size())
-                    .exito(true)
-                    .build();
-            return resultadoCarga;
+            return this.cargarExcel(listaFilas);
         } catch (IOException ex) {
-            throw new ReadingExcelFileException(
-                    "Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
-        } catch (Exception ex) {
-            ResultadoCarga resultadoCargaFallida = ResultadoCarga.builder()
-                    .nombreArchivo(filename)
-                    .numeroRegistros(0)
-                    .exito(false)
-                    .build();
-            return resultadoCargaFallida;
+            throw new ReadingExcelFileException("Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void cargarExcel(List<Horario> listaFilas){
-        int batchSize = 1000;
-        if(listaFilas.size()<=0){
-            return;
-        }
-        try(Connection conn = dataSource.getConnection()){
-            conn.setAutoCommit(false);
-            try{
-                PreparedStatement stmt = conn.prepareStatement(
-                        "INSERT INTO MAE_HORARIO("+
-                                "ID_HORARIO	      	," +
-                                "ID_CURSO	      	," +
-                                "SECCION	  		," +
-                                "DIA				 ," +
-                                "HORARIO_INICIO				 ," +
-                                "HORARIO_FIN				 " +
-                                ") VALUES ("+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "? "+
-                                ")") ;
-                int[] idx = { 0 };
-                Iterator<Horario> itHorario = listaFilas.iterator();
-                Horario horario;
-                while(itHorario.hasNext()){
-                    horario = itHorario.next();
-                    try{
-                        TypesUtil.validarBDInteger(stmt,1,horario.getIdHorario());
-                        TypesUtil.validarBDString(stmt,2,horario.getIdCurso());
-                        TypesUtil.validarBDInteger(stmt,3,horario.getSeccion());
-                        TypesUtil.validarBDString(stmt,4,horario.getDia());
-                        TypesUtil.validarBDString(stmt,5,horario.getHorarioInicio());
-                        TypesUtil.validarBDString(stmt,6,horario.getHorarioFin());
-                        stmt.addBatch();
-                        idx[0]++;
-                        if (idx[0] % batchSize == 0 ) {
-                            stmt.executeBatch();
-                            conn.commit();
-                            stmt.clearBatch();
-                            stmt.clearParameters();
-                            idx[0] = 0;
-                        }
-                    }catch(SQLException e){
-                        if (conn != null) {
-                            try {
-                                conn.rollback();
-                            } catch (Exception ex) {
-                            }
-                        }
-                    }
-                }
-
-                if(idx[0]>0){
-                    stmt.executeBatch();
-                    conn.commit();
-                }
-
-            }catch(SQLException e){
-                if (conn != null) {
-                    try {
-                        conn.rollback();
-                    } catch (Exception ex) {
-                    }
-                }
-                e.printStackTrace();
-            }
-        }catch (SQLException e ){
-            e.printStackTrace();
-        }
+    public List<Horario> cargarExcel(List<Horario> listaHorarios){
+    	listaHorarios.forEach((hor)->{
+			Horario horario = Horario.builder()
+					.idHorario(hor.getIdHorario())
+					.idCurso(hor.getIdCurso())
+					.seccion(hor.getSeccion())
+					.dia(hor.getDia())
+					.horarioInicio(hor.getHorarioInicio())
+					.horarioFin(hor.getHorarioFin())
+					.build();
+			this.registrarHorario(horario);
+		});
+		return listaHorarios;
     }
+    
+    @Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Horario registrarHorario(Horario horario) {
+		this.registrar(horario);
+		return this.buscarHorario(horario.getIdHorario(), horario.getIdCurso(), horario.getSeccion());
+	}
 
 }

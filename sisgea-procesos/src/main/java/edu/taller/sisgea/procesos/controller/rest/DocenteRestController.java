@@ -1,6 +1,7 @@
 package edu.taller.sisgea.procesos.controller.rest;
 
 import edu.taller.sisgea.procesos.model.Docente;
+import edu.taller.sisgea.procesos.model.resultadocarga.ResultadoCarga;
 import edu.taller.sisgea.procesos.service.docente.IDocenteService;
 
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,19 @@ public class DocenteRestController {
 	
 	@PostMapping(value = "/docente/cargar")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public List<Docente> cargarArchivo(@RequestParam("file[]") List<MultipartFile> file){
-		return this.docenteService.cargarArchivos(file);
+	public ResultadoCarga cargarArchivo(@RequestParam("file[]") List<MultipartFile> file){
+		ResultadoCarga resultadoCarga = ResultadoCarga.builder().build();
+		try {
+			this.docenteService.cargarArchivos(file);
+        } catch (Exception e) {
+			e.printStackTrace();
+			resultadoCarga.setExito(false);
+			resultadoCarga.setMensaje("Carga fallida");
+			return resultadoCarga;
+        }
+		resultadoCarga.setExito(true);
+		resultadoCarga.setMensaje("Registro Exitoso");
+		return resultadoCarga;
 	}
 	
 }

@@ -14,5 +14,6 @@ public class ResultadoCarga {
 	String nombreArchivo;
 	Boolean exito;
 	Integer numeroRegistros;
+	String mensaje;
 	
 }

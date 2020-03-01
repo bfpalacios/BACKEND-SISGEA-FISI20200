@@ -2,30 +2,23 @@ package edu.taller.sisgea.procesos.service.curso;
 
 import edu.taller.sisgea.procesos.mapper.ICursoMapper;
 import edu.taller.sisgea.procesos.model.Curso;
-import edu.taller.sisgea.procesos.model.resultadocarga.ResultadoCarga;
 import ob.commons.error.exception.RecursoNoEncontradoException;
 import ob.commons.excel.exception.ReadingExcelFileException;
-import ob.commons.excel.util.TypesUtil;
 import ob.commons.mantenimiento.mapper.IMantenibleMapper;
 import ob.commons.mantenimiento.service.MantenibleService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.sql.DataSource;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,8 +28,6 @@ public class CursoService extends MantenibleService<Curso> implements ICursoServ
 
     private static final String CURSO_NO_ENCONTRADO = "La programación del Curso %s no existe";
     private final ICursoMapper cursoMapper;
-
-    private @Autowired DataSource dataSource;
 
     public CursoService(@Qualifier("ICursoMapper") IMantenibleMapper<Curso> mantenibleMapper) {
         super(mantenibleMapper);
@@ -58,22 +49,21 @@ public class CursoService extends MantenibleService<Curso> implements ICursoServ
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<ResultadoCarga> cargaArchivos(List<MultipartFile> multipartfiles) {
-        List<ResultadoCarga> listaResultados = new ArrayList<>();
+    public List<Curso> cargaArchivos(List<MultipartFile> multipartfiles) {
+        List<Curso> listaCursos = new ArrayList<>();
         for (MultipartFile multipartfile : multipartfiles) {
-            String filename = multipartfile.getOriginalFilename();
-            try (BufferedInputStream bis = new BufferedInputStream(multipartfile.getInputStream())) {
-                ResultadoCarga resultadoCarga = leerExcel(filename, bis);
-                listaResultados.add(resultadoCarga);
-            } catch (IOException e) {
-                throw new RecursoNoEncontradoException(e.getMessage());
-            }
-        }
-        return listaResultados;
+			String filename = multipartfile.getOriginalFilename();
+			try (BufferedInputStream bis = new BufferedInputStream(multipartfile.getInputStream())) {
+				listaCursos = this.leerExcel(filename, bis);
+			} catch (IOException e) {
+				throw new RecursoNoEncontradoException(e.getMessage());
+			}
+		}
+		return listaCursos;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public ResultadoCarga leerExcel(String filename, InputStream inputStream){
+    public List<Curso> leerExcel(String filename, InputStream inputStream){
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
@@ -101,107 +91,36 @@ public class CursoService extends MantenibleService<Curso> implements ICursoServ
                         .grupo(grupo)
                         .build();
                 listaFilas.add(fila);
-                System.out.println("end");
             }
-            cargarExcel(listaFilas);
-            ResultadoCarga resultadoCarga = ResultadoCarga.builder()
-                    .nombreArchivo(filename)
-                    .numeroRegistros(listaFilas.size())
-                    .exito(true)
-                    .build();
-            return resultadoCarga;
+            return this.cargarExcel(listaFilas);
         } catch (IOException ex) {
-            throw new ReadingExcelFileException(
-                    "Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
-        } catch (Exception ex) {
-            ResultadoCarga resultadoCargaFallida = ResultadoCarga.builder()
-                    .nombreArchivo(filename)
-                    .numeroRegistros(0)
-                    .exito(false)
-                    .build();
-            return resultadoCargaFallida;
+            throw new ReadingExcelFileException("Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void cargarExcel(List<Curso> listaFilas){
-        int batchSize = 1000;
-        if(listaFilas.size()<=0){
-            return;
-        }
-        try(Connection conn = dataSource.getConnection()){
-            conn.setAutoCommit(false);
-            try{
-                PreparedStatement stmt = conn.prepareStatement(
-                        "INSERT INTO MAE_CURSO("+
-                                "ID_PLAN	  	," +
-                                "ID_CURSO		," +
-                                "CICLO	  	," +
-                                "ESPECIALIDAD			," +
-                                "DESCRIPCION	," +
-                                "CREDITAJE			," +
-                                "TIPO			," +
-                                "GRUPO      " +
-                                ") VALUES ("+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "?,"+
-                                "? "+
-                                ")") ;
-                int[] idx = { 0 };
-                Iterator<Curso> itCurso = listaFilas.iterator();
-                Curso curso;
-                while(itCurso.hasNext()){
-                    curso = itCurso.next();
-                    try{
-                        TypesUtil.validarBDString(stmt,  1, curso.getIdPlan());
-                        TypesUtil.validarBDString(stmt,  2, curso.getIdCurso());
-                        TypesUtil.validarBDInteger(stmt, 3, curso.getCiclo()); 
-                        TypesUtil.validarBDString(stmt,  4, curso.getEspecialidad());
-                        TypesUtil.validarBDString(stmt,  5, curso.getDescripcion());
-                        TypesUtil.validarBDDouble(stmt,  6, curso.getCreditaje());
-                        TypesUtil.validarBDString(stmt,  7, curso.getTipo());
-                        TypesUtil.validarBDString(stmt,  8, curso.getGrupo());
-                        stmt.addBatch();
-                        idx[0]++;
-                        if (idx[0] % batchSize == 0 ) {
-                            stmt.executeBatch();
-                            conn.commit();
-                            stmt.clearBatch();
-                            stmt.clearParameters();
-                            idx[0] = 0;
-                        }
-                    }catch(SQLException e){
-                        if (conn != null) {
-                            try {
-                                conn.rollback();
-                            } catch (Exception ex) {
-                            }
-                        }
-                    }
-                }
-
-                if(idx[0]>0){
-                    stmt.executeBatch();
-                    conn.commit();
-                }
-
-            }catch(SQLException e){
-                if (conn != null) {
-                    try {
-                        conn.rollback();
-                    } catch (Exception ex) {
-                    }
-                }
-                e.printStackTrace();
-            }
-        }catch (SQLException e ){
-            e.printStackTrace();
-        }
+    public List<Curso> cargarExcel(List<Curso> listaCursos){
+    	listaCursos.forEach((cur)->{
+			Curso curso = Curso.builder()
+					.idPlan(cur.getIdPlan())
+					.idCurso(cur.getIdCurso())
+					.ciclo(cur.getCiclo())
+					.especialidad(cur.getEspecialidad())
+					.descripcion(cur.getDescripcion())
+					.creditaje(cur.getCreditaje())
+					.tipo(cur.getTipo())
+					.grupo(cur.getGrupo())
+					.build();
+			this.registrarCurso(curso);
+		});
+		return listaCursos;
     }
+    
+    @Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Curso registrarCurso(Curso curso) {
+		this.registrar(curso);
+		return this.buscarCurso(curso.getIdCurso());
+	}
 
 }

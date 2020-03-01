@@ -1,7 +1,6 @@
 package edu.taller.sisgea.procesos.service.curso;
 
 import edu.taller.sisgea.procesos.model.Curso;
-import edu.taller.sisgea.procesos.model.resultadocarga.ResultadoCarga;
 import ob.commons.mantenimiento.service.IMantenibleService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +12,8 @@ public interface ICursoService extends IMantenibleService<Curso> {
 
     Curso buscarCurso (String idCurso);
 
-    List<ResultadoCarga> cargaArchivos(List<MultipartFile> multipartfiles);
+    List<Curso> cargaArchivos(List<MultipartFile> multipartfiles);
+    
+    Curso registrarCurso(Curso curso);
 
 }

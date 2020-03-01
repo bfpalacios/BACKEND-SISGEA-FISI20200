@@ -3,17 +3,14 @@ package edu.taller.sisgea.procesos.service.programacion;
 import edu.taller.sisgea.procesos.mapper.IProgramacionMapper;
 import ob.commons.error.exception.RecursoNoEncontradoException;
 import ob.commons.excel.exception.ReadingExcelFileException;
-import ob.commons.excel.util.TypesUtil;
 import ob.commons.mantenimiento.mapper.IMantenibleMapper;
 import ob.commons.mantenimiento.service.MantenibleService;
 import edu.taller.sisgea.procesos.model.Programacion;
-import edu.taller.sisgea.procesos.model.resultadocarga.ResultadoCarga;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,22 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 @Service
 public class ProgramacionService extends MantenibleService<Programacion> implements IProgramacionService {
 	
 	private static final String PROGRAMACION_NO_ENCONTRADO = "La programación del Curso %s , Sección %d no existe";
 	private final IProgramacionMapper programacionMapper;
-	
-	private @Autowired DataSource dataSource;
 	
 	public ProgramacionService(@Qualifier("IProgramacionMapper") IMantenibleMapper<Programacion> mantenibleMapper) {
 		super(mantenibleMapper);
@@ -60,22 +50,21 @@ public class ProgramacionService extends MantenibleService<Programacion> impleme
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<ResultadoCarga> cargarArchivos(List<MultipartFile> multipartfiles) {
-		List<ResultadoCarga> listaResultados = new ArrayList<>();
+	public List<Programacion> cargarArchivos(List<MultipartFile> multipartfiles) {
+		List<Programacion> listaProgramaciones = new ArrayList<>();
 		for (MultipartFile multipartfile : multipartfiles) {
 			String filename = multipartfile.getOriginalFilename();
 			try (BufferedInputStream bis = new BufferedInputStream(multipartfile.getInputStream())) {
-				ResultadoCarga resultadoCarga = leerExcel(filename, bis);
-				listaResultados.add(resultadoCarga);
+				listaProgramaciones = this.leerExcel(filename, bis);
 			} catch (IOException e) {
 				throw new RecursoNoEncontradoException(e.getMessage());
 			}
 		}
-		return listaResultados;
+		return listaProgramaciones;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED)
-	public ResultadoCarga leerExcel(String filename, InputStream inputStream){
+	public List<Programacion> leerExcel(String filename, InputStream inputStream){
 		try (Workbook workbook = WorkbookFactory.create(inputStream)) {
 			Sheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
@@ -102,102 +91,34 @@ public class ProgramacionService extends MantenibleService<Programacion> impleme
 						.build();
 				listaFilas.add(fila);
 			}
-			cargarExcel(listaFilas);
-			ResultadoCarga resultadoCarga = ResultadoCarga.builder()
-					.nombreArchivo(filename)
-					.numeroRegistros(listaFilas.size())
-					.exito(true)
-					.build();
-			return resultadoCarga;
+			return this.cargarExcel(listaFilas);
 		} catch (IOException ex) {
-			throw new ReadingExcelFileException(
-							"Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
-		} catch (Exception ex) {
-			ResultadoCarga resultadoCargaFallida = ResultadoCarga.builder()
-					.nombreArchivo(filename)
-					.numeroRegistros(0)
-					.exito(false)
-					.build();
-			return resultadoCargaFallida;
+			throw new ReadingExcelFileException("Asegúrese de que se trata de un archivo Excel. Nombre de archivo: " + filename);
 		}
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void cargarExcel(List<Programacion> listaFilas){
-		int batchSize = 1000;
-		if(listaFilas.size()<=0){
-			return;
-		}
-		try(Connection conn = dataSource.getConnection()){
-			conn.setAutoCommit(false);
-			try{
-				PreparedStatement stmt = conn.prepareStatement(
-					"INSERT INTO MAE_PROGRAMACION("+
-						"ID_CURSO	  	," +
-						"SECCION		," +
-						"ID_DOCENTE	  	," +   
-						"TOPE			," +
-						"MATRICULADOS	," +   
-						"TURNO			," +
-						"AULA			" +
-					") VALUES ("+
-						"?,"+
-						"?,"+
-						"?,"+
-						"?,"+
-						"?,"+
-						"?,"+
-						"? "+
-					")") ;
-				int[] idx = { 0 };
-				Iterator<Programacion> itProgramacion = listaFilas.iterator();
-				Programacion programacion;
-				while(itProgramacion.hasNext()){
-					programacion = itProgramacion.next();
-					try{
-						TypesUtil.validarBDString(stmt,  1, programacion.getIdCurso());
-						TypesUtil.validarBDInteger(stmt,  2, programacion.getSeccion());
-						TypesUtil.validarBDString(stmt,  3, programacion.getIdDocente());
-						TypesUtil.validarBDInteger(stmt,  4, programacion.getTope());
-						TypesUtil.validarBDInteger(stmt,  5, programacion.getMatriculados());
-						TypesUtil.validarBDString(stmt,  6, programacion.getTurno());
-						TypesUtil.validarBDString(stmt,  7, programacion.getAula());
-						stmt.addBatch();
-						idx[0]++;
-						if (idx[0] % batchSize == 0 ) {
-							stmt.executeBatch();
-							conn.commit();
-							stmt.clearBatch();
-							stmt.clearParameters();
-							idx[0] = 0;
-						}
-					}catch(SQLException e){
-						if (conn != null) {
-							try {
-								conn.rollback();
-							} catch (Exception ex) {
-							}
-						}
-					}
-				}
-
-				if(idx[0]>0){
-					stmt.executeBatch();
-					conn.commit();
-				}
-				
-			}catch(SQLException e){
-				if (conn != null) {
-					try {
-						conn.rollback();
-					} catch (Exception ex) {
-					}
-				}
-				e.printStackTrace();
-			}
-		}catch (SQLException e ){
-			e.printStackTrace();
-		}
+	public List<Programacion> cargarExcel(List<Programacion> listaProgramaciones){
+		listaProgramaciones.forEach((prog)->{
+			Programacion programacion = Programacion.builder()
+					.idCurso(prog.getIdCurso())
+					.seccion(prog.getSeccion())
+					.idDocente(prog.getIdDocente())
+					.tope(prog.getTope())
+					.matriculados(prog.getMatriculados())
+					.turno(prog.getTurno())
+					.aula(prog.getAula())
+					.build();
+			this.registrarProgramacion(programacion);
+		});
+		return listaProgramaciones;
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Programacion registrarProgramacion(Programacion programacion) {
+		this.registrar(programacion);
+		return this.buscarProgramacion(programacion.getIdCurso(), programacion.getSeccion());
 	}
 	
 }

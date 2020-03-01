@@ -1,6 +1,5 @@
 package edu.taller.sisgea.procesos.service.plan;
 
-import ob.commons.error.model.ErrorResponse;
 import ob.commons.mantenimiento.service.IMantenibleService;
 import edu.taller.sisgea.procesos.model.Plan;
 
@@ -14,6 +13,8 @@ public interface IPlanService extends IMantenibleService<Plan> {
 	
 	Plan buscarPlan(String idPlan);
 	
-	List<ErrorResponse> cargarArchivos(List<MultipartFile> multipartfiles);
+	void cargarArchivos(List<MultipartFile> multipartfiles);
+	
+	Plan registrarPlan(Plan plan);
 	
 }
