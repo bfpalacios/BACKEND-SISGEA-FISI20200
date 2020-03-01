@@ -15,7 +15,7 @@ public class Usuario {
 	@CaracterRequerido(maxLength = 20)
 	private String usuario;
 	@CaracterRequerido(maxLength = 45)
-	private String contraseña;
+	private String contrasenia;
 	@CaracterRequerido(maxLength = 40)
 	private String nombres;
 	@CaracterRequerido(maxLength = 40)

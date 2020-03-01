@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.taller.sisgea.seguridad.mapper.IAuthMapper">
+
+	<sql id="consultaVistaMant">
+        SELECT *
+        FROM SEG_USUARIO
+    </sql>
+	
+    <select id="autenticarUsuario" resultType="Boolean" parameterType="CriterioBusquedaAutorizacion" statementType="PREPARED">
+        SELECT COUNT(*)
+        FROM SEG_USUARIO
+        WHERE USERNAME = #{username}
+        AND PASSWORD = MD5(#{password})
+    </select>
+    
+    <select id="buscarPermisosPorUsuario" resultType="Integer" parameterType="CriterioBusquedaAutorizacion" statementType="PREPARED">
+        SELECT
+			DISTINCT
+			ID_RECURSO
+		FROM SEG_PERFIL_RECURSO
+		WHERE ID_PERFIL IN	(
+			SELECT ID_PERFIL
+			FROM SEG_PERFIL_USUARIO
+			WHERE USERNAME = #{username}
+		)
+    </select>
+
+</mapper>
