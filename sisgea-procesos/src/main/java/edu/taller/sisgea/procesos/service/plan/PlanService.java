@@ -50,15 +50,17 @@ public class PlanService extends MantenibleService<Plan> implements IPlanService
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void cargarArchivos(List<MultipartFile> multipartfiles) {
+	public List<Plan> cargarArchivos(List<MultipartFile> multipartfiles) {
+		List<Plan> listaPlanes = new ArrayList<>();
 		for (MultipartFile multipartfile : multipartfiles) {
 			String filename = multipartfile.getOriginalFilename();
 			try (BufferedInputStream bis = new BufferedInputStream(multipartfile.getInputStream())) {
-				this.leerExcel(filename, bis);
+				listaPlanes = this.leerExcel(filename, bis);
 			} catch (IOException e) {
 				throw new RecursoNoEncontradoException(e.getMessage());
 			}
 		}
+		return listaPlanes;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED)

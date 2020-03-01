@@ -13,7 +13,7 @@ public interface IPlanService extends IMantenibleService<Plan> {
 	
 	Plan buscarPlan(String idPlan);
 	
-	void cargarArchivos(List<MultipartFile> multipartfiles);
+	List<Plan> cargarArchivos(List<MultipartFile> multipartfiles);
 	
 	Plan registrarPlan(Plan plan);
 	
