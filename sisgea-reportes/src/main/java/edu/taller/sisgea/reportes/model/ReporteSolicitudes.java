@@ -33,4 +33,5 @@ public class ReporteSolicitudes {
 	String horaFin;
 	String estadoAsistencia;
 	String descripcionEstadoAsistencia;
+	Integer cantidad;
 }
