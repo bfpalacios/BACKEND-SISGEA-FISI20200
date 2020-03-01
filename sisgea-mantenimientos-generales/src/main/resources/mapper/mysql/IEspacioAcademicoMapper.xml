@@ -3,19 +3,12 @@
 <mapper namespace="edu.taller.sisgea.mantenimientosgenerales.mapper.IEspacioAcademicoMapper">
 
 	<sql id="consultaVistaMant">
-        SELECT id_espacio_academico
-             , descripcion_espacio_academico
-             , aforo
-             , pabellon
-             , descripcion_pabellon
-             , tipo_espacio
-             , descripcion_tipo_espacio
-             , asignable
+        SELECT *
         FROM VIE_MAN_ESPACIO_ACADEMICO
     </sql>
 	
     <sql id="orden">
-    	ORDER BY id_espacio_academico
+    	ORDER BY ID_ESPACIO_ACADEMICO
     </sql>
 	
     <select id="buscarTodos" resultType="EspacioAcademico" statementType="PREPARED">
@@ -26,7 +19,7 @@
     <select id="buscarEspacioAcademico" resultType="EspacioAcademico">
         <include refid="consultaVistaMant"/>
         WHERE
-                id_espacio_academico = #{idEspacioAcademico}
+                ID_ESPACIO_ACADEMICO = #{idEspacioAcademico}
     </select>
     
     <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
