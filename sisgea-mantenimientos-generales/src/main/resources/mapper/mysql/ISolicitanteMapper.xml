@@ -13,6 +13,7 @@
              , tipo_solicitante
              , descripcion_tipo_solicitante
              , base
+             , descripcion_base
              , escuela
              , descripcion_escuela
         FROM VIE_MAN_SOLICITANTE
@@ -38,14 +39,14 @@
             CALL PRC_MANT_MAE_SOLICITANTE(
                 #{modo, 							jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.idSolicitante, 	jdbcType=INTEGER, mode=INOUT},
-                #{objetoMantenido.dni,				jdbcType=NUMERIC, mode=IN},
-                #{objetoMantenido.nombres, 	      	jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.dni,				jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.nombres, 	      	jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.apellidoPaterno,	jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.apellidoMaterno,	jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.celular, 	      	jdbcType=NUMERIC, mode=IN},
                 #{objetoMantenido.email, 	     	jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.tipoSolicitante,	jdbcType=VARCHAR, mode=IN},
-                #{objetoMantenido.base, 	      	jdbcType=NUMERIC, mode=IN},
+                #{objetoMantenido.base, 	      	jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.escuela, 	      	jdbcType=VARCHAR, mode=IN}
             )
         }
