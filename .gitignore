@@ -139,3 +139,4 @@ README.md
 
 #STS
 .sts4-cache/
+sisgea-boot/src/main/resources/application.properties
