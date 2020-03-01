@@ -29,7 +29,7 @@
                 #{objetoMantenido.usuario, 	      				jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.nombres,						jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.apellidos,					jdbcType=VARCHAR, mode=IN},
-                #{objetoMantenido.contraseña,     				jdbcType=VARCHAR, mode=IN}
+                #{objetoMantenido.contrasenia,     				jdbcType=VARCHAR, mode=IN}
             )
         }
     </select>
