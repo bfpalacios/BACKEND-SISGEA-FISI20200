@@ -18,6 +18,7 @@ public class EstadoEspacioAcademico {
 	String idCurso;
 	String descripcionCurso;
 	String dia;
+	String tipo;
 	String idHorarioDetalle;
 	String tipoHorario;
 }
