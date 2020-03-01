@@ -4,7 +4,7 @@
 	
 	<select id="buscarPorCriterio" parameterType="CriterioBusquedaEstadoEspacioAcademico"  resultType="EstadoEspacioAcademico" statementType="PREPARED">	
 		SELECT * 
-		FROM vie_con_estado_espacios_academicos
+		FROM VIE_CON_ESTADO_ESPACIOS_ACADEMICOS
 		<where>
 			<if  test="idsEspacioAcademico !=null and idsEspacioAcademico.size()>0">
 				AND ID_ESPACIO_ACADEMICO IN 
