@@ -1,7 +1,6 @@
 package edu.taller.sisgea.procesos.service.docente;
 
 import ob.commons.mantenimiento.service.IMantenibleService;
-import edu.taller.sisgea.procesos.model.resultadocarga.ResultadoCarga;
 import edu.taller.sisgea.procesos.model.Docente;
 
 import java.util.List;
@@ -14,6 +13,8 @@ public interface IDocenteService extends IMantenibleService<Docente> {
 	
 	Docente buscarDocente(String idDocente);
 	
-	List<ResultadoCarga> cargarArchivos(List<MultipartFile> multipartfiles);
+	List<Docente> cargarArchivos(List<MultipartFile> multipartfiles);
+	
+	Docente registrarDocente(Docente docente);
 	
 }

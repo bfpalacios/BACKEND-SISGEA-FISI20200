@@ -24,5 +24,17 @@
         WHERE
                 id_docente = #{idDocente}
     </select>
+    
+    <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
+        {
+            CALL PRC_MANT_MAE_DOCENTE(
+                #{modo, 						jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.idDocente,	jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.nombres,		jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.apellidos,	jdbcType=VARCHAR, mode=IN},
+                #{objetoMantenido.tipo,			jdbcType=VARCHAR, mode=IN}
+            )
+        }
+    </select>
 
 </mapper>
