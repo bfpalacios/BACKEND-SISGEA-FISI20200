@@ -14,7 +14,7 @@
         AND PASSWORD = MD5(#{password})
     </select>
     
-    <select id="buscarPermisosPorUsuario" resultType="Integer" parameterType="CriterioBusquedaAutorizacion" statementType="PREPARED">
+    <select id="buscarPermisosPorUsuario" resultType="Recurso" parameterType="CriterioBusquedaAutorizacion" statementType="PREPARED">
         SELECT
 			DISTINCT
 			ID_RECURSO

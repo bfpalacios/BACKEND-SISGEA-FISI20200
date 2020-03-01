@@ -12,5 +12,5 @@ public interface IAuthMapper {
 	
 	Boolean autenticarUsuario(CriterioBusquedaAutorizacion criterio);
 	
-	List<Recurso> buscarPerfilPorUsuario(CriterioBusquedaAutorizacion criterio);
+	List<Recurso> buscarPermisosPorUsuario(CriterioBusquedaAutorizacion criterio);
 }

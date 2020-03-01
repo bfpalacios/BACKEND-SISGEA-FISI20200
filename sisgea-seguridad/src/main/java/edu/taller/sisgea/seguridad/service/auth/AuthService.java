@@ -34,7 +34,7 @@ public class AuthService implements IAuthService{
 		auth.setExito(this.authMapper.autenticarUsuario(criterio));
 		if(auth.isExito()) {
 			//buscar recursos del usuario
-			auth.setRecursos(this.authMapper.buscarPerfilPorUsuario(criterio));
+			auth.setRecursos(this.authMapper.buscarPermisosPorUsuario(criterio));
 			//crear autorizacion
 			auth.setInicioAutorizacion(new Date());
 			auth.setFinAutorizacion(DatesUtils.sumarRestarHorasFecha(auth.getInicioAutorizacion(),AUTORIZATION_DURATION_HOURS));

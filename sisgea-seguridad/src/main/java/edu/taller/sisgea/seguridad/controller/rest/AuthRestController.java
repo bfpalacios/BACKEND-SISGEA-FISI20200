@@ -1,9 +1,9 @@
 package edu.taller.sisgea.seguridad.controller.rest;
 
-import java.util.List;
-
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.taller.sisgea.seguridad.model.Autorizacion;
@@ -20,8 +20,8 @@ public class AuthRestController {
 		this.authService = authService;
 	}
 	
-	@GetMapping(value = "/auth/login")
-	public Autorizacion logIn(Usuario usuario) {
+	@PostMapping(value = "/auth/login", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public Autorizacion logIn(@RequestBody Usuario usuario) {
 		return this.authService.logIn(usuario);
 	}
 }
