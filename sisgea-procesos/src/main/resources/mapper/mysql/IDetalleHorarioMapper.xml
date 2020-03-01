@@ -36,9 +36,9 @@
     
     <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
         {
-            CALL PRC_MANT_MAE_DETALLE_HORARIO(
+            CALL PRC_MANT_MAE_HORARIO_DETALLE(
                 #{modo, 							jdbcType=VARCHAR, mode=IN},
-                #{objetoMantenido.idDetalleHorario,	jdbcType=INTEGER, mode=INOUT},
+                #{objetoMantenido.idHorarioDetalle,	jdbcType=INTEGER, mode=INOUT},
                 #{objetoMantenido.idCurso,			jdbcType=VARCHAR, mode=IN},
                 #{objetoMantenido.seccion,			jdbcType=NUMERIC, mode=IN},
                 #{objetoMantenido.idHorario,		jdbcType=INTEGER, mode=IN},

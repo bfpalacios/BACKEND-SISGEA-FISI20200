@@ -25,7 +25,7 @@
     <select id="buscarHorario" resultType="edu.taller.sisgea.procesos.model.Horario">
         <include refid="consultaVistaMant"/>
         WHERE
-        id_horario = #{idhorario}
+        id_horario = #{idHorario}
         AND id_curso = #{idCurso}
         AND seccion = #{seccion}
     </select>
