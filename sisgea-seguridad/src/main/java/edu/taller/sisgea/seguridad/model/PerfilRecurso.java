@@ -14,12 +14,9 @@ import ob.commons.spring.validation.validation.group.IRegistro;
 @AllArgsConstructor
 public class PerfilRecurso {
 
-	@IdNumerico(maxRange = 65535, groups = IRegistro.class)
 	private Integer idPerfilRecurso;
-	@IdNumerico(maxRange = 65535, groups = IRegistro.class)
 	private Integer idPerfil;
 	private String descripcionPerfil;
-	@CaracterRequerido(maxLength = 20)
 	private String idRecurso;
 	private String descripcionRecurso;
 	private String idCategoriaRecurso;

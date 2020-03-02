@@ -42,14 +42,12 @@ public class PerfilRecursoRestController {
 	@PostMapping(value = "/perfil-recurso", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public PerfilRecurso registrarPerfilRecurso(@Validated({IRegistro.class, Default.class}) @RequestBody PerfilRecurso perfilRecurso) {
-		System.out.println(perfilRecurso);
 		this.perfilRecursoService.registrarPerfilRecurso(perfilRecurso);
 		return this.perfilRecursoService.buscarPerfilRecurso(perfilRecurso.getIdPerfilRecurso());
 	}
 	
 	@PutMapping(value = "/perfil-recurso/{idPerfilRecurso}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public PerfilRecurso actualizarPerfilRecurso(@IdNumerico(maxRange = 65535) @PathVariable Integer idPerfilRecurso,
-	                             @Validated @RequestBody PerfilRecurso perfilRecurso) {
+	public PerfilRecurso actualizarPerfilRecurso(@PathVariable Integer idPerfilRecurso, @Validated @RequestBody PerfilRecurso perfilRecurso) {
 		System.out.println(perfilRecurso);
 		this.perfilRecursoService.actualizarPerfilRecurso(idPerfilRecurso, perfilRecurso);
 		return this.perfilRecursoService.buscarPerfilRecurso(perfilRecurso.getIdPerfilRecurso());
@@ -57,7 +55,7 @@ public class PerfilRecursoRestController {
 	
 	@DeleteMapping(value = "/perfil-recurso/{idPerfilRecurso}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void eliminarPerfilRecurso(@IdNumerico(maxRange = 65535) @PathVariable Integer idPerfilRecurso) {
+	public void eliminarPerfilRecurso(@PathVariable Integer idPerfilRecurso) {
 		System.out.println(idPerfilRecurso);
 		this.perfilRecursoService.eliminarPerfilRecurso(idPerfilRecurso);
 	}

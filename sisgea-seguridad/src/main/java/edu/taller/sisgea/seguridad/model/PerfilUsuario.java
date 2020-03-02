@@ -14,13 +14,10 @@ import ob.commons.spring.validation.validation.group.IRegistro;
 @AllArgsConstructor
 public class PerfilUsuario {
 
-	@IdNumerico(maxRange = 65535, groups = IRegistro.class)
 	private Integer idPerfilUsuario;
-	@CaracterRequerido(maxLength = 20)
 	private String usuario;
 	private String nombres;
 	private String apellidos;
-	@IdNumerico(maxRange = 65535, groups = IRegistro.class)
 	private Integer idPerfil;
 	private String descripcionPerfil;
 
