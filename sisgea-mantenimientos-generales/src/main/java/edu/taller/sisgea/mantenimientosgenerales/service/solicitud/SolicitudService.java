@@ -22,6 +22,9 @@ import ob.commons.mantenimiento.service.MantenibleService;
 public class SolicitudService extends MantenibleService<Solicitud> implements ISolicitudService {
 
 	private static final String SOLICITUD_NO_ENCONTRADO = "El Espacio Académico %s no existe";
+	private static final String APROBAR = "APROBAR";
+	private static final String RECHAZAR = "RECHAZAR";
+	private static final String CANCELAR = "CANCELAR";
 
 	private final ISolicitudMapper solicitudMapper;
 	private String uploadFolder = ".//src//main//resource//archivos//";
@@ -70,9 +73,28 @@ public class SolicitudService extends MantenibleService<Solicitud> implements IS
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public Solicitud aprobarSolicitud(Integer idSolicitud, Solicitud solicitud) {
+	public Solicitud aprobarSolicitud(Integer idSolicitud) {
+		Solicitud solicitud = new Solicitud();
 		solicitud.setIdSolicitud(idSolicitud);
-		this.solicitudMapper.aprobarSolicitud(solicitud);
+		this.solicitudMapper.aprobarSolicitud(APROBAR,idSolicitud);
+		return this.buscarSolicitud(solicitud.getIdSolicitud());
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Solicitud rechazarSolicitud(Integer idSolicitud) {
+		Solicitud solicitud = new Solicitud();
+		solicitud.setIdSolicitud(idSolicitud);
+		this.solicitudMapper.aprobarSolicitud(RECHAZAR, idSolicitud);
+		return this.buscarSolicitud(solicitud.getIdSolicitud());
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Solicitud cancelarSolicitud(Integer idSolicitud) {
+		Solicitud solicitud = new Solicitud();
+		solicitud.setIdSolicitud(idSolicitud);
+		this.solicitudMapper.aprobarSolicitud(CANCELAR, idSolicitud);
 		return this.buscarSolicitud(solicitud.getIdSolicitud());
 	}
 	
