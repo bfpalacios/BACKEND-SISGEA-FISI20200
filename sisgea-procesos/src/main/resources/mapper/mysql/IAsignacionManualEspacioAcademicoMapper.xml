@@ -19,7 +19,7 @@
     <select id="buscarAsignacionManualEspacioAcademico" resultType="AsignacionManualEspacioAcademico">
         <include refid="consultaVistaMant"/>
         WHERE
-                id_espacio_academico = #{idEspacioAcademico}
+                id_asignacion = #{idEspacioAcademico}
     </select>
     
     <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">
