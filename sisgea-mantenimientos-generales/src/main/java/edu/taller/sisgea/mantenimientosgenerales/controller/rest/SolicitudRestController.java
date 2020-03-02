@@ -85,15 +85,16 @@ public class SolicitudRestController {
 	}
 	
 	@PostMapping(value = "/solicitud-espacios/carga-archivo")
-	public ResponseEntity<?> guardarArchivo(@RequestParam("file") MultipartFile file) {
-		if(!file.isEmpty()) {
+	public ResponseEntity<?> guardarArchivo(@RequestParam("file[]") List<MultipartFile> file) {
+		System.out.println(file);
+		/*if(!file.isEmpty()) {
 			return new ResponseEntity<Object>("Seleccionar un archivo", HttpStatus.CREATED);
 		}
 		try {
 			this.solicitudService.guardarArchivo(file);
 		} catch(IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		return new ResponseEntity<Object>("Carga exitosa", HttpStatus.OK);
 	}
 
