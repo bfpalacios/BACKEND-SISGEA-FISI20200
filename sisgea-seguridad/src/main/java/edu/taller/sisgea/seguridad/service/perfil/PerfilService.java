@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class PerfilService extends MantenibleService<Perfil> implements IPerfilService {
 	
-	private static final String PERFIL_NO_ENCONTRADO = "El Espacio Académico %s no existe";
+	private static final String PERFIL_NO_ENCONTRADO = "El Perfil %s no existe";
 	private final IPerfilMapper perfilMapper;
 	
 	public PerfilService(@Qualifier("IPerfilMapper") IMantenibleMapper<Perfil> mantenibleMapper) {
