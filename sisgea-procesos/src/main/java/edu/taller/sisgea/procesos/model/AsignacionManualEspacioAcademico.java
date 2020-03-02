@@ -35,5 +35,7 @@ public class AsignacionManualEspacioAcademico {
     private String idCurso;
     private Integer idHorario;
     private Integer idHorarioDetalle;
+    private String pabellon;
+    private String descripcionPabellon;
     
 }
