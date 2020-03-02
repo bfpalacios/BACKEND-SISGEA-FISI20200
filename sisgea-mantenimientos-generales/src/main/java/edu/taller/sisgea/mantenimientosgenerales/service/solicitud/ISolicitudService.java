@@ -17,7 +17,11 @@ public interface ISolicitudService {
 
 	Solicitud actualizarSolicitud(Integer idSolicitud, Solicitud solicitud);
 
-	Solicitud aprobarSolicitud(Integer idSolicitud, Solicitud solicitud);
+	Solicitud aprobarSolicitud(Integer idSolicitud);
+	
+	Solicitud rechazarSolicitud(Integer idSolicitud);
+	
+	Solicitud cancelarSolicitud(Integer idSolicitud);
 
 	void eliminarSolicitud(Integer idSolicitud);
 

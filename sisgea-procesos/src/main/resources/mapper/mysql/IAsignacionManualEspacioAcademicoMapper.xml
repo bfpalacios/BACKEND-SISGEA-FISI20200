@@ -3,28 +3,7 @@
 <mapper namespace="edu.taller.sisgea.procesos.mapper.IAsignacionManualEspacioAcademicoMapper">
 
 	<sql id="consultaVistaMant">
-        SELECT  ID
-        		, ID_ASIGNACION
-        		, ID_ESPACIO_ACADEMICO
-        		, CICLO
-        		, ID_CURSO
-                , CURSO
-                , SECCION
-                , ID_DOCENTE
-                , NOMBRES_DOCENTE
-                , TOPE
-                , MATRICULADOS
-                , TURNO
-                , DESCRIPCION_TURNO
-                , TIPO_HORARIO
-                , DESCRIPCION_TIPO_HORARIO
-                , DIA
-                , DESCRIPCION_DIA
-                , ID_HORARIO
-                , ID_HORARIO_DETALLE
-                , HORARIO_INICIO
-                , HORARIO_FIN
-                , ESPACIO
+        SELECT  *
         FROM VIE_CON_ASIGNACION_ESPACIO_ACADEMICO
     </sql>
     
@@ -40,7 +19,7 @@
     <select id="buscarAsignacionManualEspacioAcademico" resultType="AsignacionManualEspacioAcademico">
         <include refid="consultaVistaMant"/>
         WHERE
-                id_espacio_academico = #{idEspacioAcademico}
+                id_asignacion = #{idEspacioAcademico}
     </select>
     
     <select id="mantener" parameterType="ParametroMantenimiento" statementType="CALLABLE">

@@ -59,10 +59,20 @@ public class SolicitudRestController {
 		this.solicitudService.eliminarSolicitud(idSolicitud);
 	}
 	
-	@PutMapping(value = "/solicitud-espacios/accion/{idSolicitud}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public Solicitud aprobarSolicitud(@IdNumerico(maxRange = 65535) @PathVariable Integer idSolicitud,
-			@Validated @RequestBody Solicitud Solicitud) {
-		return this.solicitudService.aprobarSolicitud(idSolicitud, Solicitud);
+	@PutMapping(value = "/solicitud-espacios/aprobar/{idSolicitud}")
+	public Solicitud aprobarSolicitud(@IdNumerico(maxRange = 65535) @PathVariable Integer idSolicitud) {
+		return this.solicitudService.aprobarSolicitud(idSolicitud);
+	}
+	
+	@PutMapping(value = "/solicitud-espacios/rechazar/{idSolicitud}")
+	public Solicitud rechazarSolicitud(@IdNumerico(maxRange = 65535) @PathVariable Integer idSolicitud) {
+		return this.solicitudService.rechazarSolicitud(idSolicitud);
+	}
+	
+	@PutMapping(value = "/solicitud-espacios/cancelar/{idSolicitud}")
+	public Solicitud cancelarSolicitud(@IdNumerico(maxRange = 65535) @PathVariable Integer idSolicitud) {
+		System.out.println("entro a rest");
+		return this.solicitudService.cancelarSolicitud(idSolicitud);
 	}
 	
 	@PostMapping(value = "/solicitud-espacios/carga", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

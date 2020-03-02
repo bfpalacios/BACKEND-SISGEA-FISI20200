@@ -38,15 +38,19 @@
 				#{objetoMantenido.fechaReserva, 		jdbcType=DATE, 	  mode=IN},
 				#{objetoMantenido.horaInicio, 			jdbcType=VARCHAR, mode=IN},
 				#{objetoMantenido.horaFin, 				jdbcType=VARCHAR, mode=IN},
-				#{objetoMantenido.estadoAsistencia, 	jdbcType=VARCHAR, mode=IN}
+				#{objetoMantenido.estadoAsistencia, 	jdbcType=VARCHAR, mode=IN},
+				#{objetoMantenido.nombreArchivo, 		jdbcType=VARCHAR, mode=IN},
+				#{objetoMantenido.archivo, 				jdbcType=BLOB, mode=IN}
+				
 			)
 		}
 	</select>
 	
-	<select id="aprobarSolicitud" parameterType="Solicitud" statementType="CALLABLE">
+	<select id="aprobarSolicitud" statementType="CALLABLE">
 		{
-			CALL PRC_APROBAR_SOLICITUD(
-				#{idSolicitud							jdbcType=VARCHAR, mode=IN}
+			CALL PRC_APROBACION_SOLICITUD(
+				#{modo,									jdbcType=VARCHAR, mode=IN},
+				#{idSolicitud,							jdbcType=INTEGER, mode=INOUT}
 			)
 		}
 	</select>
