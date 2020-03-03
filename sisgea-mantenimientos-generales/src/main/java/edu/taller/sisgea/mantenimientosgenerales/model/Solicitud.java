@@ -28,6 +28,7 @@ public class Solicitud {
 	private String tipoSolicitud;
 	private String descripcionTipoSolicitud;
 	private String motivo;
+	private String descripcionMotivo;
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaRegistro;
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
