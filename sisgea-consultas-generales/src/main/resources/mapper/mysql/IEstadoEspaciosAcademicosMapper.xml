@@ -13,7 +13,7 @@
 				</foreach> 
 			</if>
 			<if  test="fecha != null">
-				AND (DIA = CONCAT(ELT(WEEKDAY(#{fecha}) + 1, 'LU', 'MA', 'MI', 'JU', 'VI', 'SA', 'DO')) OR DIA IS NULL)
+				AND (DIA = CONCAT(ELT(WEEKDAY(#{fecha}) + 1, 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO', 'DOMINGO')) OR DIA IS NULL)
 			</if>
 		</where>
 		ORDER BY ID_ESPACIO_ACADEMICO ASC, HORARIO ASC
